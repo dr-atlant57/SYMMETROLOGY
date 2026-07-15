@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Symmetry Scan — Sample Report | Institute of Symmetry</title>
+<meta name="description" content="A sample AI symmetry analysis report: facial landmark scoring, symmetry index, structural metrics, and longitudinal tracking — illustrative preview of the Institute of Symmetry platform.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0D0E; --panel:#111416; --panel2:#0E1113;
+  --ink:#EDEAE1; --ink-dim:#9A9E98; --ink-faint:#5C625E;
+  --before:#E8472C; --before-dim:#7A3A2D;
+  --after:#6FA89A; --after-dim:#3E5F58;
+  --line:rgba(237,234,225,0.09); --line-strong:rgba(237,234,225,0.18);
+  --serif:'Fraunces',serif; --sans:'IBM Plex Sans',sans-serif; --mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.55;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 5vw 90px;}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:22px 5vw;border-bottom:1px solid var(--line);}
+.topbar a{color:var(--ink-faint);font-family:var(--mono);font-size:12px;text-decoration:none;letter-spacing:.06em;}
+.topbar a:hover{color:var(--ink-dim);}
+.badge-sample{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-faint);border:1px solid var(--line-strong);padding:6px 12px;text-transform:uppercase;}
+
+/* masthead */
+.masthead{padding:70px 0 40px;text-align:center;}
+.wordmark{font-family:var(--serif);font-weight:700;font-size:clamp(36px,6vw,64px);letter-spacing:-0.01em;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}
+.wordmark .scan{color:var(--after);}
+.vtag{font-family:var(--mono);font-size:12px;border:1px solid var(--line-strong);padding:4px 10px;color:var(--ink-dim);vertical-align:middle;}
+.masthead .sub{font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-top:16px;}
+.masthead .note{margin-top:14px;font-size:13px;color:var(--ink-faint);font-style:italic;}
+.window-badge{display:inline-block;margin-top:26px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);border:1px solid var(--after-dim);background:rgba(111,168,154,0.07);padding:8px 18px;}
+
+/* comparison row */
+.compare{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:start;margin-top:56px;border:1px solid var(--line);}
+@media(max-width:900px){.compare{grid-template-columns:1fr;}}
+.panel{padding:34px 28px;}
+.panel.before{border-right:1px solid var(--line);}
+.panel.after{border-left:1px solid var(--line);}
+@media(max-width:900px){.panel.before,.panel.after{border:none;border-top:1px solid var(--line);}}
+.panel-head{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:22px;}
+.panel.before .panel-head{color:var(--before);}
+.panel.after .panel-head{color:var(--after);}
+.panel-head .date{color:var(--ink-faint);}
+.face-svg{width:100%;max-width:280px;display:block;margin:0 auto;}
+.face-outline{fill:none;stroke:var(--line-strong);stroke-width:1;}
+.face-axis{stroke:var(--ink-faint);stroke-width:1;stroke-dasharray:2 4;opacity:.5;}
+.guide.before{stroke:var(--before);opacity:.55;}
+.guide.after{stroke:var(--after);opacity:.55;}
+.pt.before{fill:var(--before);}
+.pt.after{fill:var(--after);}
+.pt-label{font-family:var(--mono);font-size:8px;fill:var(--ink-faint);}
+.index-readout{text-align:center;margin-top:18px;}
+.index-readout .n{font-family:var(--serif);font-weight:600;font-size:52px;}
+.panel.before .index-readout .n{color:var(--before);}
+.panel.after .index-readout .n{color:var(--after);}
+.index-readout .of100{font-family:var(--mono);font-size:12px;color:var(--ink-faint);}
+
+.mid-col{padding:34px 22px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-width:260px;}
+.mid-col .label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:10px;}
+.radar-legend{display:flex;gap:18px;margin-top:14px;font-family:var(--mono);font-size:11px;}
+.radar-legend span{display:flex;align-items:center;gap:6px;}
+.swatch{width:10px;height:2px;display:inline-block;}
+.swatch.before{background:var(--before);}
+.swatch.after{background:var(--after);}
+.delta-badge{margin-top:24px;font-family:var(--mono);font-size:20px;color:var(--after);border:1px solid var(--after-dim);padding:10px 20px;}
+
+/* section headers reused */
+.sec{margin-top:64px;}
+.sec-tag{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:28px;}
+
+/* metrics grid */
+.metrics-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+@media(max-width:900px){.metrics-grid{grid-template-columns:repeat(2,1fr);}}
+.metric-cell{background:var(--bg);padding:22px 18px;}
+.metric-cell .m-label{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);}
+.metric-cell .m-row{display:flex;align-items:baseline;gap:8px;margin-top:14px;font-family:var(--serif);font-size:18px;}
+.metric-cell .m-before{color:var(--before-dim);text-decoration:line-through;text-decoration-color:var(--before);}
+.metric-cell .m-arrow{color:var(--ink-faint);font-size:14px;}
+.metric-cell .m-after{color:var(--after);font-weight:600;}
+.metric-cell .m-pct{margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--ink-faint);}
+.metric-cell .m-pct b{color:var(--after);}
+
+/* profile + angles */
+.trigrid{display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);}
+@media(max-width:900px){.trigrid{grid-template-columns:1fr;}}
+.tri-cell{background:var(--bg);padding:26px 22px;}
+.tri-cell h4{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:16px;text-align:center;}
+.profile-svg{width:100%;max-width:170px;display:block;margin:0 auto;}
+.profile-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink-dim);margin-top:8px;padding:6px 0;border-top:1px solid var(--line);}
+.profile-row b{color:var(--after);}
+.angle-table{margin-top:14px;}
+.angle-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;padding:9px 0;border-top:1px solid var(--line);color:var(--ink-dim);}
+.angle-row b{color:var(--after);}
+
+/* heatmap */
+.heatgrid{display:grid;grid-template-columns:1fr 1fr auto;gap:28px;align-items:center;}
+@media(max-width:760px){.heatgrid{grid-template-columns:1fr 1fr;}}
+.heat-legend{display:flex;flex-direction:column;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--ink-faint);}
+.heat-bar{width:14px;height:170px;background:linear-gradient(to top,#2d6cdf,#59c3b0,#e8d24c,#e8472c);border:1px solid var(--line-strong);}
+.heat-face-wrap{text-align:center;}
+.heat-face-wrap .cap{font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin-top:10px;text-transform:uppercase;letter-spacing:.06em;}
+
+/* summary + recs */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);}
+@media(max-width:800px){.split{grid-template-columns:1fr;}}
+.split-cell{background:var(--bg);padding:30px 26px;}
+.split-cell h3{font-family:var(--serif);font-size:20px;margin-bottom:18px;}
+.check-list{list-style:none;}
+.check-list li{display:flex;gap:10px;padding:8px 0;font-size:14px;color:var(--ink-dim);}
+.check-list li::before{content:'✓';color:var(--after);font-family:var(--mono);flex-shrink:0;}
+.rec-list{list-style:none;}
+.rec-list li{padding:8px 0;font-size:14px;color:var(--ink-dim);border-top:1px solid var(--line);}
+.rec-list li:first-child{border-top:none;}
+.rec-list .tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-faint);text-transform:uppercase;margin-bottom:4px;}
+.stars{margin-top:16px;color:#D9B24C;letter-spacing:3px;font-size:16px;}
+
+/* trust strip */
+.trust{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:64px;}
+@media(max-width:800px){.trust{grid-template-columns:repeat(2,1fr);}}
+.trust-cell{background:var(--bg);padding:20px 16px;text-align:center;}
+.trust-cell .t-num{font-family:var(--serif);font-size:22px;color:var(--after);}
+.trust-cell .t-label{font-family:var(--mono);font-size:10px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.05em;margin-top:6px;}
+
+/* footer disclaimer + cta */
+.report-disclaimer{margin-top:40px;font-family:var(--mono);font-size:11px;color:var(--ink-faint);text-align:center;line-height:1.8;max-width:680px;margin-left:auto;margin-right:auto;}
+.cta-band{margin-top:56px;text-align:center;padding:50px 30px;border:1px solid var(--line-strong);}
+.cta-band h3{font-family:var(--serif);font-size:clamp(22px,3vw,32px);max-width:640px;margin:0 auto;}
+.cta-band p{margin-top:12px;color:var(--ink-dim);font-size:14px;}
+.cta-band .btn{display:inline-block;margin-top:24px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#0B0D0E;background:var(--after);padding:14px 30px;text-decoration:none;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="https://symmetrology.org/">← symmetrology.org</a>
+  <span class="badge-sample">Sample report · illustrative data</span>
+</div>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="wordmark">SYMMETRY <span class="scan">SCAN</span> <span class="vtag">v1.0</span></div>
+    <div class="sub">Full Facial Asymmetry Analysis</div>
+    <div class="note">This is a sample report built with illustrative sample data — not a real patient or clinical outcome.</div>
+    <div class="window-badge">12-Week Tracking Window</div>
+  </div>
+
+  <!-- COMPARISON -->
+  <div class="compare">
+    <div class="panel before">
+      <div class="panel-head"><span>Scan T0</span><span class="date">Baseline</span></div>
+      <svg class="face-svg" viewBox="0 0 300 380">
+        <line x1="150" y1="30" x2="150" y2="360" class="face-axis"/>
+        <ellipse cx="150" cy="200" rx="105" ry="150" class="face-outline"/>
+        <line x1="60" y1="123" x2="240" y2="133" class="guide before"/>
+        <line x1="70" y1="162" x2="230" y2="170" class="guide before"/>
+        <line x1="80" y1="249" x2="220" y2="255" class="guide before"/>
+        <circle cx="108" cy="118" r="3" class="pt before"/>
+        <circle cx="202" cy="128" r="3" class="pt before"/>
+        <circle cx="116" cy="158" r="3" class="pt before"/>
+        <circle cx="204" cy="166" r="3" class="pt before"/>
+        <circle cx="163" cy="206" r="3" class="pt before"/>
+        <circle cx="122" cy="246" r="3" class="pt before"/>
+        <circle cx="206" cy="252" r="3" class="pt before"/>
+        <circle cx="168" cy="332" r="3" class="pt before"/>
+      </svg>
+      <div class="index-readout"><div class="n">62</div><div class="of100">/ 100 SYMMETRY INDEX</div></div>
+    </div>
+
+    <div class="mid-col">
+      <div class="label">Category Radar</div>
+      <svg width="260" height="260" viewBox="0 0 300 340">
+        <polygon points="150.0,42.0 252.7,116.6 213.5,237.4 86.5,237.4 47.3,116.6" fill="none" stroke="rgba(237,234,225,0.12)" stroke-width="1"/>
+        <polygon points="150.0,69.0 227.0,125.0 197.6,215.5 102.4,215.5 73.0,125.0" fill="none" stroke="rgba(237,234,225,0.09)" stroke-width="1"/>
+        <polygon points="150.0,96.0 201.4,133.3 181.7,193.7 118.3,193.7 98.6,133.3" fill="none" stroke="rgba(237,234,225,0.09)" stroke-width="1"/>
+        <polygon points="150.0,123.0 175.7,141.7 165.9,171.8 134.1,171.8 124.3,141.7" fill="none" stroke="rgba(237,234,225,0.09)" stroke-width="1"/>
+        <polygon points="150.0,87.4 212.7,129.6 190.0,205.0 111.9,202.4 92.5,131.3" fill="rgba(232,71,44,0.12)" stroke="var(--before)" stroke-width="1.5"/>
+        <polygon points="150.0,49.6 247.6,118.3 207.8,229.5 90.3,232.1 55.5,119.3" fill="rgba(111,168,154,0.1)" stroke="var(--after)" stroke-width="1.5"/>
+        <text x="150" y="14" text-anchor="middle" class="pt-label">EYES</text>
+        <text x="278" y="113" text-anchor="start" class="pt-label">NOSE</text>
+        <text x="226" y="260" text-anchor="middle" class="pt-label">JAW</text>
+        <text x="74" y="260" text-anchor="middle" class="pt-label">LIPS</text>
+        <text x="22" y="113" text-anchor="end" class="pt-label">BROWS</text>
+      </svg>
+      <div class="radar-legend">
+        <span><i class="swatch before"></i>T0</span>
+        <span><i class="swatch after"></i>T1</span>
+      </div>
+      <div class="delta-badge">+30 pts</div>
+    </div>
+
+    <div class="panel after">
+      <div class="panel-head"><span class="date">Week 12</span><span>Scan T1</span></div>
+      <svg class="face-svg" viewBox="0 0 300 380">
+        <line x1="150" y1="30" x2="150" y2="360" class="face-axis"/>
+        <ellipse cx="150" cy="200" rx="105" ry="150" class="face-outline"/>
+        <line x1="65" y1="128" x2="235" y2="128" class="guide after"/>
+        <line x1="75" y1="167" x2="225" y2="167" class="guide after"/>
+        <line x1="85" y1="253" x2="215" y2="253" class="guide after"/>
+        <circle cx="110" cy="120" r="3" class="pt after"/>
+        <circle cx="190" cy="120" r="3" class="pt after"/>
+        <circle cx="118" cy="160" r="3" class="pt after"/>
+        <circle cx="182" cy="160" r="3" class="pt after"/>
+        <circle cx="150" cy="206" r="3" class="pt after"/>
+        <circle cx="126" cy="246" r="3" class="pt after"/>
+        <circle cx="174" cy="246" r="3" class="pt after"/>
+        <circle cx="150" cy="332" r="3" class="pt after"/>
+      </svg>
+      <div class="index-readout"><div class="n">92</div><div class="of100">/ 100 SYMMETRY INDEX</div></div>
+    </div>
+  </div>
+
+  <!-- METRICS -->
+  <div class="sec">
+    <div class="sec-tag">Structural Metrics</div>
+    <div class="metrics-grid">
+      <div class="metric-cell"><div class="m-label">Eyes — height Δ</div><div class="m-row"><span class="m-before">2.6mm</span><span class="m-arrow">→</span><span class="m-after">0.6mm</span></div><div class="m-pct">Change <b>76%</b></div></div>
+      <div class="metric-cell"><div class="m-label">Brows — height Δ</div><div class="m-row"><span class="m-before">2.8mm</span><span class="m-arrow">→</span><span class="m-after">0.4mm</span></div><div class="m-pct">Change <b>86%</b></div></div>
+      <div class="metric-cell"><div class="m-label">Nose — axis offset</div><div class="m-row"><span class="m-before">2.3mm</span><span class="m-arrow">→</span><span class="m-after">0.4mm</span></div><div class="m-pct">Change <b>83%</b></div></div>
+      <div class="metric-cell"><div class="m-label">Lips — line tilt</div><div class="m-row"><span class="m-before">2.1°</span><span class="m-arrow">→</span><span class="m-after">0.3°</span></div><div class="m-pct">Change <b>86%</b></div></div>
+      <div class="metric-cell"><div class="m-label">Jaw — width Δ</div><div class="m-row"><span class="m-before">3.2mm</span><span class="m-arrow">→</span><span class="m-after">0.7mm</span></div><div class="m-pct">Change <b>78%</b></div></div>
+    </div>
+  </div>
+
+  <!-- PROFILE + ANGLES -->
+  <div class="sec">
+    <div class="sec-tag">Profile &amp; Angular Analysis</div>
+    <div class="trigrid">
+      <div class="tri-cell">
+        <h4>Left Profile</h4>
+        <svg class="profile-svg" viewBox="0 0 160 300">
+          <path d="M100,30 Q130,80 122,140 Q135,150 132,168 Q140,180 128,190 Q135,220 110,240 Q100,270 90,290" fill="none" stroke="var(--line-strong)" stroke-width="1.5"/>
+          <circle cx="120" cy="90" r="2.5" class="pt before"/>
+          <circle cx="128" cy="165" r="2.5" class="pt before"/>
+          <circle cx="122" cy="205" r="2.5" class="pt before"/>
+        </svg>
+        <div class="profile-row"><span>Forehead pos.</span><span>−2.1mm → <b>−0.3mm</b></span></div>
+        <div class="profile-row"><span>Nose pos.</span><span>−1.8mm → <b>−0.2mm</b></span></div>
+        <div class="profile-row"><span>Lip pos.</span><span>−1.6mm → <b>−0.3mm</b></span></div>
+      </div>
+
+      <div class="tri-cell">
+        <h4>Angles &amp; Proportions</h4>
+        <svg class="profile-svg" viewBox="0 0 220 260" style="max-width:200px;">
+          <ellipse cx="110" cy="130" rx="80" ry="108" class="face-outline"/>
+          <line x1="40" y1="100" x2="180" y2="100" class="guide after"/>
+          <line x1="70" y1="100" x2="110" y2="165" class="guide after"/>
+          <line x1="150" y1="100" x2="110" y2="165" class="guide after"/>
+          <line x1="110" y1="165" x2="110" y2="230" class="guide after"/>
+        </svg>
+        <div class="angle-table">
+          <div class="angle-row"><span>Inter-ocular angle</span><span>3.2° → <b>0.6°</b></span></div>
+          <div class="angle-row"><span>Nasolabial angle</span><span>109° → <b>102°</b></span></div>
+          <div class="angle-row"><span>Mandibular angle</span><span>128° → <b>132°</b></span></div>
+          <div class="angle-row"><span>Facial index</span><span>0.87 → <b>0.93</b></span></div>
+        </div>
+      </div>
+
+      <div class="tri-cell">
+        <h4>Right Profile</h4>
+        <svg class="profile-svg" viewBox="0 0 160 300">
+          <path d="M60,30 Q30,80 38,140 Q25,150 28,168 Q20,180 32,190 Q25,220 50,240 Q60,270 70,290" fill="none" stroke="var(--line-strong)" stroke-width="1.5"/>
+          <circle cx="40" cy="90" r="2.5" class="pt after"/>
+          <circle cx="30" cy="165" r="2.5" class="pt after"/>
+          <circle cx="35" cy="205" r="2.5" class="pt after"/>
+        </svg>
+        <div class="profile-row"><span>Forehead pos.</span><span>−2.0mm → <b>−0.2mm</b></span></div>
+        <div class="profile-row"><span>Nose pos.</span><span>−1.7mm → <b>−0.3mm</b></span></div>
+        <div class="profile-row"><span>Lip pos.</span><span>−1.5mm → <b>−0.2mm</b></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEATMAP -->
+  <div class="sec">
+    <div class="sec-tag">Asymmetry Distribution Map</div>
+    <div class="heatgrid">
+      <div class="heat-face-wrap">
+        <svg class="face-svg" viewBox="0 0 300 380">
+          <defs>
+            <radialGradient id="heatBefore" cx="55%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#E8472C" stop-opacity="0.9"/>
+              <stop offset="35%" stop-color="#E8D24C" stop-opacity="0.6"/>
+              <stop offset="70%" stop-color="#59C3B0" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#2D6CDF" stop-opacity="0.15"/>
+            </radialGradient>
+            <clipPath id="clipBefore"><ellipse cx="150" cy="200" rx="105" ry="150"/></clipPath>
+          </defs>
+          <rect x="45" y="50" width="210" height="300" fill="url(#heatBefore)" clip-path="url(#clipBefore)"/>
+          <ellipse cx="150" cy="200" rx="105" ry="150" class="face-outline"/>
+          <line x1="150" y1="30" x2="150" y2="360" class="face-axis"/>
+        </svg>
+        <div class="cap">T0 — before</div>
+      </div>
+      <div class="heat-face-wrap">
+        <svg class="face-svg" viewBox="0 0 300 380">
+          <defs>
+            <radialGradient id="heatAfter" cx="50%" cy="50%" r="65%">
+              <stop offset="0%" stop-color="#59C3B0" stop-opacity="0.45"/>
+              <stop offset="60%" stop-color="#2D6CDF" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#2D6CDF" stop-opacity="0.1"/>
+            </radialGradient>
+            <clipPath id="clipAfter"><ellipse cx="150" cy="200" rx="105" ry="150"/></clipPath>
+          </defs>
+          <rect x="45" y="50" width="210" height="300" fill="url(#heatAfter)" clip-path="url(#clipAfter)"/>
+          <ellipse cx="150" cy="200" rx="105" ry="150" class="face-outline"/>
+          <line x1="150" y1="30" x2="150" y2="360" class="face-axis"/>
+        </svg>
+        <div class="cap">T1 — week 12</div>
+      </div>
+      <div class="heat-legend">
+        <span>MAX</span>
+        <div class="heat-bar"></div>
+        <span>MIN</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY + RECS -->
+  <div class="sec">
+    <div class="sec-tag">Summary &amp; Recommendations</div>
+    <div class="split">
+      <div class="split-cell">
+        <h3>Summary</h3>
+        <ul class="check-list">
+          <li>Overall facial symmetry measurably improved across the tracking window</li>
+          <li>All tracked landmarks moved toward the bilateral axis</li>
+          <li>Mean asymmetry reduced by 81% across categories</li>
+          <li>Composite Symmetry Index: 92 / 100</li>
+        </ul>
+        <div class="stars">★★★★★</div>
+      </div>
+      <div class="split-cell">
+        <h3>Suggested Next Steps</h3>
+        <ul class="rec-list">
+          <li><span class="tag">Cadence</span>Re-scan every 2–3 weeks to keep the trend line current</li>
+          <li><span class="tag">Focus area</span>Continue monitoring jaw-width variance — largest remaining delta</li>
+          <li><span class="tag">Posture</span>Track head position alongside facial metrics for fuller context</li>
+          <li><span class="tag">Review</span>Full re-scan recommended at the 3-month mark</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUST STRIP -->
+  <div class="trust">
+    <div class="trust-cell"><div class="t-num">468+</div><div class="t-label">Landmark points</div></div>
+    <div class="trust-cell"><div class="t-num">100%</div><div class="t-label">Geometric method</div></div>
+    <div class="trust-cell"><div class="t-num">1:1</div><div class="t-label">Personalized output</div></div>
+    <div class="trust-cell"><div class="t-num">Δmm</div><div class="t-label">Measurable change</div></div>
+    <div class="trust-cell"><div class="t-num">0</div><div class="t-label">Invasive steps</div></div>
+  </div>
+
+  <p class="report-disclaimer">Sample report generated from illustrative data for demonstration purposes only. Not a real patient, not a clinical outcome, not a medical device. Not intended to diagnose, treat, cure, or prevent any condition.</p>
+
+  <div class="cta-band">
+    <h3>This is a sample. Every real scan is generated from your own photo.</h3>
+    <p>Try the live preview or request a walkthrough of the platform.</p>
+    <a class="btn" href="https://symmetrology.org/#collab">Request Demo</a>
+  </div>
+
+</div>
+</body>
+</html>
