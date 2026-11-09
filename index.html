@@ -507,11 +507,15 @@
     <div class="section-tag"><span data-i18n="tagCollab">Collaboration</span></div>
     <h2 data-i18n="collabH">We welcome researchers, engineers, clinicians, AI specialists, universities and institutions building objective methods for structural human assessment.</h2>
     <p class="cta-lede" data-i18n="ctaLede">Join the research network. Request early access.</p>
-    <form class="request" id="requestForm">
-      <input type="email" required data-i18n-placeholder="emailPh" placeholder="Your email">
+    <form class="request" id="requestForm" action="https://formsubmit.co/nextdollmill@gmail.com" method="POST">
+      <input type="email" name="email" required autocomplete="email" aria-label="Email" data-i18n-placeholder="emailPh" placeholder="Your email">
+      <input type="hidden" name="_subject" value="Symmetrology.org — Request Access">
+      <input type="hidden" name="_url" value="https://symmetrology.org/">
+      <input type="hidden" name="_template" value="table">
+      <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
       <button type="submit" data-i18n="submitBtn">Request Access</button>
     </form>
-    <p class="form-note" id="formNote" data-i18n="formNote">No spam. Occasional research updates only.</p>
+    <p class="form-note" id="formNote" role="status" aria-live="polite" data-i18n="formNote">No spam. Occasional research updates only.</p>
   </section>
 </main>
 
@@ -560,7 +564,10 @@ const translations = {
     emailPh:"Your email",
     submitBtn:"Request Access",
     formNote:"No spam. Occasional research updates only.",
-    formThanks:"Thank you. We will be in touch.",
+    formThanks:"Thank you. Your request was accepted.",
+    formSending:"Sending your request…",
+    formError:"Unable to confirm delivery. Please try again or contact us directly:",
+    formEmailFallback:"Send an email"
     footTag:"A new scientific infrastructure for measuring human structural organization.",
     disclaimer:"For research and educational purposes only. Not a medical device. Not intended to diagnose, treat, cure, or prevent any condition."
   },
@@ -602,7 +609,10 @@ const translations = {
     emailPh:"Ваш email",
     submitBtn:"Запросить доступ",
     formNote:"Никакого спама. Только редкие обновления исследований.",
-    formThanks:"Спасибо. Мы свяжемся с вами.",
+    formThanks:"Спасибо! Ваш запрос принят.",
+    formSending:"Отправляем запрос…",
+    formError:"Не удалось подтвердить отправку. Попробуйте ещё раз или напишите напрямую:",
+    formEmailFallback:"Написать письмо"
     footTag:"Новая научная инфраструктура для измерения структурной организации человека.",
     disclaimer:"Только для исследовательских и образовательных целей. Не является медицинским изделием. Не предназначено для диагностики, лечения или профилактики каких-либо заболеваний."
   },
@@ -644,7 +654,10 @@ const translations = {
     emailPh:"Ihre E-Mail-Adresse",
     submitBtn:"Zugang anfragen",
     formNote:"Kein Spam. Nur gelegentliche Forschungsupdates.",
-    formThanks:"Vielen Dank. Wir melden uns bei Ihnen.",
+    formThanks:"Vielen Dank. Ihre Anfrage wurde angenommen.",
+    formSending:"Ihre Anfrage wird gesendet…",
+    formError:"Die Übermittlung konnte nicht bestätigt werden. Bitte versuchen Sie es erneut oder schreiben Sie uns:",
+    formEmailFallback:"E-Mail senden"
     footTag:"Eine neue wissenschaftliche Infrastruktur zur Messung struktureller menschlicher Organisation.",
     disclaimer:"Nur zu Forschungs- und Bildungszwecken. Kein Medizinprodukt. Nicht zur Diagnose, Behandlung, Heilung oder Vorbeugung von Erkrankungen bestimmt."
   },
@@ -686,7 +699,10 @@ const translations = {
     emailPh:"თქვენი ელფოსტა",
     submitBtn:"წვდომის მოთხოვნა",
     formNote:"სპამის გარეშე. მხოლოდ ხანდახანდელი კვლევითი განახლებები.",
-    formThanks:"გმადლობთ. დაგიკავშირდებით.",
+    formThanks:"გმადლობთ. თქვენი მოთხოვნა მიღებულია.",
+    formSending:"მოთხოვნა იგზავნება…",
+    formError:"გაგზავნა ვერ დადასტურდა. სცადეთ ხელახლა ან მოგვწერეთ:",
+    formEmailFallback:"ელფოსტის გაგზავნა"
     footTag:"ახალი სამეცნიერო ინფრასტრუქტურა ადამიანის სტრუქტურული ორგანიზაციის გასაზომად.",
     disclaimer:"მხოლოდ კვლევითი და საგანმანათლებლო მიზნებისთვის. არ არის სამედიცინო მოწყობილობა. არ არის განკუთვნილი რაიმე მდგომარეობის დიაგნოსტირების, მკურნალობის, განკურნების ან პრევენციისთვის."
   }
@@ -742,12 +758,42 @@ applyLang(detectLang());
   }
 })();
 
-// Form handling (no backend — local acknowledgement only)
-document.getElementById('requestForm').addEventListener('submit', function(e){
+// Live request delivery. A success notice is displayed ONLY if FormSubmit confirms acceptance.
+document.getElementById('requestForm').addEventListener('submit', async function(e){
   e.preventDefault();
+  if (!this.reportValidity()) return;
+
   const note = document.getElementById('formNote');
-  note.textContent = translations[currentLang].formThanks;
-  this.reset();
+  const submitButton = this.querySelector('button[type="submit"]');
+  const form = this;
+  submitButton.disabled = true;
+  note.textContent = translations[currentLang].formSending;
+
+  try {
+    const fields = Object.fromEntries(new FormData(form).entries());
+    const response = await fetch('https://formsubmit.co/ajax/nextdollmill@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(fields)
+    });
+    const result = await response.json();
+    // FormSubmit may respond with HTTP 200 and success: "false" (a STRING) on failure.
+    const accepted = response.ok && (result.success === true || result.success === 'true');
+    if (!accepted) throw new Error('FormSubmit did not accept the request');
+
+    note.textContent = translations[currentLang].formThanks;
+    form.reset();
+  } catch (error) {
+    note.textContent = translations[currentLang].formError + ' ';
+    const fallback = document.createElement('a');
+    fallback.href = 'mailto:nextdollmill@gmail.com?subject=' + encodeURIComponent('Symmetrology.org — Request Access');
+    fallback.textContent = translations[currentLang].formEmailFallback;
+    fallback.style.textDecoration = 'underline';
+    note.appendChild(fallback);
+    console.error('Request form submission failed:', error);
+  } finally {
+    submitButton.disabled = false;
+  }
 });
 </script>
 
