@@ -507,22 +507,24 @@
     <div class="section-tag"><span data-i18n="tagCollab">Collaboration</span></div>
     <h2 data-i18n="collabH">We welcome researchers, engineers, clinicians, AI specialists, universities and institutions building objective methods for structural human assessment.</h2>
     <p class="cta-lede" data-i18n="ctaLede">Join the research network. Request early access.</p>
-    <form class="request" id="requestForm" action="https://formsubmit.co/nextdollmill@gmail.com" method="POST">
+    <form class="request" id="requestForm" action="https://formsubmit.co/rootfrontier.office@gmail.com" method="POST">
       <input type="email" name="email" required autocomplete="email" aria-label="Email" data-i18n-placeholder="emailPh" placeholder="Your email">
       <input type="hidden" name="_subject" value="Symmetrology.org — Request Access">
       <input type="hidden" name="_url" value="https://symmetrology.org/">
       <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="source_site" value="symmetrology.org">
       <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
       <button type="submit" data-i18n="submitBtn">Request Access</button>
     </form>
     <p class="form-note" id="formNote" role="status" aria-live="polite" data-i18n="formNote">No spam. Occasional research updates only.</p>
-    <p class="form-note"><a href="mailto:nextdollmill@gmail.com?subject=Symmetrology.org%20Request" data-i18n="directContactLabel" style="color:inherit;text-decoration:underline">Or email us directly</a></p>
+    <p class="form-note"><a href="mailto:rootfrontier.office@gmail.com?subject=Symmetrology.org%20Request" data-i18n="directContactLabel" style="color:inherit;text-decoration:underline">Or email us directly</a></p>
   </section>
 </main>
 
 <footer>
   <p class="tagline" data-i18n="footTag">A new scientific infrastructure for measuring human structural organization.</p>
   <p class="disclaimer" data-i18n="disclaimer">For research and educational purposes only. Not a medical device. Not intended to diagnose, treat, cure, or prevent any condition.</p>
+  <p class="form-note"><a href="https://rootfrontier.systems" style="color:inherit">ROOT FRONTIER SYSTEMS</a> · <a href="mailto:rootfrontier.office@gmail.com" style="color:inherit">rootfrontier.office@gmail.com</a></p>
 </footer>
 
 <script>
@@ -776,7 +778,9 @@ document.getElementById('requestForm').addEventListener('submit', async function
 
   try {
     const fields = Object.fromEntries(new FormData(form).entries());
-    const response = await fetch('https://formsubmit.co/ajax/nextdollmill@gmail.com', {
+    fields.source_page = location.origin + location.pathname;
+    fields.submitted_at = new Date().toISOString();
+    const response = await fetch('https://formsubmit.co/ajax/rootfrontier.office@gmail.com', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(fields)
@@ -791,7 +795,7 @@ document.getElementById('requestForm').addEventListener('submit', async function
   } catch (error) {
     note.textContent = translations[currentLang].formError + ' ';
     const fallback = document.createElement('a');
-    fallback.href = 'mailto:nextdollmill@gmail.com?subject=' + encodeURIComponent('Symmetrology.org — Request Access');
+    fallback.href = 'mailto:rootfrontier.office@gmail.com?subject=' + encodeURIComponent('Symmetrology.org — Request Access');
     fallback.textContent = translations[currentLang].formEmailFallback;
     fallback.style.textDecoration = 'underline';
     note.appendChild(fallback);
