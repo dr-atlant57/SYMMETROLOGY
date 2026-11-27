@@ -775,6 +775,8 @@ document.getElementById('requestForm').addEventListener('submit', async function
   const form = this;
   submitButton.disabled = true;
   note.textContent = translations[currentLang].formSending;
+  const controller = typeof AbortController === 'function' ? new AbortController() : null;
+  const timer = controller ? setTimeout(() => controller.abort(), 15000) : null;
 
   try {
     const fields = Object.fromEntries(new FormData(form).entries());
@@ -783,7 +785,8 @@ document.getElementById('requestForm').addEventListener('submit', async function
     const response = await fetch('https://formsubmit.co/ajax/rootfrontier.office@gmail.com', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(fields)
+      body: JSON.stringify(fields),
+      ...(controller ? { signal: controller.signal } : {})
     });
     const result = await response.json();
     // FormSubmit may respond with HTTP 200 and success: "false" (a STRING) on failure.
@@ -795,12 +798,13 @@ document.getElementById('requestForm').addEventListener('submit', async function
   } catch (error) {
     note.textContent = translations[currentLang].formError + ' ';
     const fallback = document.createElement('a');
-    fallback.href = 'mailto:rootfrontier.office@gmail.com?subject=' + encodeURIComponent('Symmetrology.org — Request Access');
+    fallback.href = 'mailto:rootfrontier.office@gmail.com?subject=' + encodeURIComponent('Symmetrology.org — Request Access') + '&body=' + encodeURIComponent('Email: ' + form.elements.email.value + '\nSource: ' + location.origin + location.pathname);
     fallback.textContent = translations[currentLang].formEmailFallback;
     fallback.style.textDecoration = 'underline';
     note.appendChild(fallback);
     console.error('Request form submission failed:', error);
   } finally {
+    if (timer !== null) clearTimeout(timer);
     submitButton.disabled = false;
   }
 });
